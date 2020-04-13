@@ -2,72 +2,72 @@ const covid19ImpactEstimator = (data) => {
   const {
     reportedCases, totalHospitalBeds, region, timeToElapse, periodType
   } = data;
+  const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  let timeToElapseInDays;
+  let timeInDays;
 
   switch (periodType) {
     case 'days':
-      timeToElapseInDays = timeToElapse;
+      timeInDays = timeToElapse;
       break;
     case 'weeks':
-      timeToElapseInDays = Math.floor(timeToElapse * 7);
+      timeInDays = timeToElapse * 7;
       break;
     case 'months':
-      timeToElapseInDays = Math.floor(timeToElapse * 30);
+      timeInDays = timeToElapse * 30;
       break;
     default:
       break;
   }
 
-  const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
+  const timeFactor = Math.floor(timeInDays / 3);
 
-  const normalisedTime = Math.floor(2 ** Math.floor(timeToElapseInDays / 3));
+  const crntlyInfctdNrml = reportedCases * 10;
+  const crntlyInfctdSvr = reportedCases * 50;
 
-  const currentlyInfectedNormal = Math.floor(reportedCases * 10);
-  const currentlyInfectedSevere = Math.floor(reportedCases * 50);
+  const infcByRqstdTmNrml = crntlyInfctdNrml * (2 ** timeFactor);
+  const infcByRqstdTmSvr = crntlyInfctdSvr * (2 ** timeFactor);
 
 
-  const infectionsByRequestedTimeNormal = Math.floor(currentlyInfectedNormal * normalisedTime);
-  const infectionsByRequestedTimeSevere = Math.floor(currentlyInfectedSevere * normalisedTime);
+  const svrCsByRqsdTmNrml = Math.floor(infcByRqstdTmNrml * 0.15);
+  const svrCsByRqsdTmSvr = Math.floor(infcByRqstdTmSvr * 0.15);
 
-  const SCBRTN = Math.floor(infectionsByRequestedTimeNormal * 0.15);
-  const SCBRTS = Math.floor(infectionsByRequestedTimeSevere * 0.15);
-  const severeCasesByRequestedTimeNormal = SCBRTN;
-  const severeCasesByRequestedTimeSevere = SCBRTS;
+  const THB = totalHospitalBeds;
 
-  const HBBRTN = Math.round((totalHospitalBeds * 0.35) - SCBRTN);
-  const hsptlBedsByRqstdTimeNormal = HBBRTN;
-  const HBBRTS = Math.round((totalHospitalBeds * 0.35) - SCBRTS);
-  const hsptlBedsByRqstdTimeSevere = HBBRTS;
+  const bdByRqstdTmNrml = THB - Math.floor(THB * 0.35) - svrCsByRqsdTmNrml;
+  const bdByRqstdTmSvr = THB - Math.floor(THB * 0.35) - svrCsByRqsdTmSvr;
 
-  const IBRTN = infectionsByRequestedTimeNormal;
-  const IBRTS = infectionsByRequestedTimeSevere;
+  const icuCsByRqstdTmNrml = Math.floor(0.05 * infcByRqstdTmNrml);
+  const icuCsByRqstdTmSvr = Math.floor(0.05 * infcByRqstdTmSvr);
+
+  const ventCsByRqstdTmNrml = Math.floor(0.02 * infcByRqstdTmNrml);
+  const ventCsByRqstdTmSvr = Math.floor(0.02 * infcByRqstdTmSvr);
+
   const AVDIU = avgDailyIncomeInUSD;
   const AVDIP = avgDailyIncomePopulation;
 
-  const dollarsInFlightNormal = Math.floor(IBRTN * AVDIU * (AVDIP / 30));
-  const dollarsInFlightSevere = Math.floor(IBRTS * AVDIU * (AVDIP / 30));
+  const dlrFlghtN = Math.floor(((infcByRqstdTmNrml * AVDIU) * AVDIP) / 30);
+  const dlrFlghtS = Math.floor((infcByRqstdTmSvr * AVDIU * AVDIP) / 30);
 
   return {
     data,
     impact: {
-      currentlyInfected: currentlyInfectedNormal,
-      infectionsByRequestedTime: infectionsByRequestedTimeNormal,
-      severeCasesByRequestedTime: severeCasesByRequestedTimeNormal,
-      hospitalBedsByRequestedTime: hsptlBedsByRqstdTimeNormal,
-      casesForICUByRequestedTime: Math.floor(infectionsByRequestedTimeNormal * 0.05),
-      casesForVentilatorsByRequestedTime: Math.floor(infectionsByRequestedTimeSevere * 0.02),
-      dollarsInFlight: dollarsInFlightNormal
+      currentlyInfected: crntlyInfctdNrml,
+      infectionsByRequestedTime: infcByRqstdTmNrml,
+      severeCasesByRequestedTime: svrCsByRqsdTmNrml,
+      hospitalBedsByRequestedTime: bdByRqstdTmNrml,
+      casesForICUByRequestedTime: icuCsByRqstdTmNrml,
+      casesForVentilatorsByRequestedTime: ventCsByRqstdTmNrml,
+      dollarsInFlight: dlrFlghtN
     }, // best case estimation
     severeImpact: {
-      currentlyInfected: currentlyInfectedSevere,
-      infectionsByRequestedTime: infectionsByRequestedTimeSevere,
-      severeCasesByRequestedTime: severeCasesByRequestedTimeSevere,
-      hospitalBedsByRequestedTime: hsptlBedsByRqstdTimeSevere,
-      casesForICUByRequestedTime: Math.floor(infectionsByRequestedTimeSevere * 0.05),
-      casesForVentilatorsByRequestedTime: Math.floor(infectionsByRequestedTimeSevere * 0.02),
-      dollarsInFlight: dollarsInFlightSevere
-
+      currentlyInfected: crntlyInfctdNrml,
+      infectionsByRequestedTime: infcByRqstdTmSvr,
+      severeCasesByRequestedTime: svrCsByRqsdTmSvr,
+      hospitalBedsByRequestedTime: bdByRqstdTmSvr,
+      casesForICUByRequestedTime: icuCsByRqstdTmSvr,
+      casesForVentilatorsByRequestedTime: ventCsByRqstdTmSvr,
+      dollarsInFlight: dlrFlghtS
     } // severe case estimation
   };
 };
