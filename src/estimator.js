@@ -10,10 +10,10 @@ const covid19ImpactEstimator = (data) => {
       timeToElapseInDays = timeToElapse;
       break;
     case 'weeks':
-      timeToElapseInDays = timeToElapse * 7;
+      timeToElapseInDays = Math.floor(timeToElapse * 7);
       break;
     case 'months':
-      timeToElapseInDays = timeToElapse * 30;
+      timeToElapseInDays = Math.floor(timeToElapse * 30);
       break;
     default:
       break;
@@ -21,14 +21,14 @@ const covid19ImpactEstimator = (data) => {
 
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  const normalisedTimeFactor = 2 ** (timeToElapseInDays / 3);
+  const normalisedTime = Math.floor(2 ** Math.floor(timeToElapseInDays / 3));
 
-  const currentlyInfectedNormal = reportedCases * 10;
-  const currentlyInfectedSevere = reportedCases * 50;
+  const currentlyInfectedNormal = Math.floor(reportedCases * 10);
+  const currentlyInfectedSevere = Math.floor(reportedCases * 50);
 
 
-  const infectionsByRequestedTimeNormal = currentlyInfectedNormal * normalisedTimeFactor;
-  const infectionsByRequestedTimeSevere = currentlyInfectedSevere * normalisedTimeFactor;
+  const infectionsByRequestedTimeNormal = Math.floor(currentlyInfectedNormal * normalisedTime);
+  const infectionsByRequestedTimeSevere = Math.floor(currentlyInfectedSevere * normalisedTime);
 
   const SCBRTN = Math.floor(infectionsByRequestedTimeNormal * 0.15);
   const SCBRTS = Math.floor(infectionsByRequestedTimeSevere * 0.15);
