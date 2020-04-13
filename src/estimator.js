@@ -34,8 +34,8 @@ const covid19ImpactEstimator = (data) => {
 
   const THB = totalHospitalBeds;
 
-  const bdByRqstdTmNrml = THB - Math.floor(THB * 0.35) - svrCsByRqsdTmNrml;
-  const bdByRqstdTmSvr = THB - Math.floor(THB * 0.35) - svrCsByRqsdTmSvr;
+  const bdByRqstdTmNrml = Math.floor(THB * 0.35) - svrCsByRqsdTmNrml;
+  const bdByRqstdTmSvr = Math.floor(THB * 0.35) - svrCsByRqsdTmSvr;
 
   const icuCsByRqstdTmNrml = Math.floor(0.05 * infcByRqstdTmNrml);
   const icuCsByRqstdTmSvr = Math.floor(0.05 * infcByRqstdTmSvr);
