@@ -1,6 +1,6 @@
 const covid19ImpactEstimator = (data) => {
   const {
-    reportedCases, totalHospitalBeds, region, timeToElapse, periodType,
+    reportedCases, totalHospitalBeds, region, timeToElapse, periodType
   } = data;
 
   let timeToElapseInDays;
@@ -21,7 +21,7 @@ const covid19ImpactEstimator = (data) => {
 
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  const normalisedTimeFactor = 2**Math.floor(timeToElapseInDays / 3) ;
+  const normalisedTimeFactor = 2 ** Math.floor(timeToElapseInDays / 3);
 
   const currentlyInfectedNormal = reportedCases * 10;
   const currentlyInfectedSevere = reportedCases * 50;
@@ -30,15 +30,24 @@ const covid19ImpactEstimator = (data) => {
   const infectionsByRequestedTimeNormal = currentlyInfectedNormal * normalisedTimeFactor;
   const infectionsByRequestedTimeSevere = currentlyInfectedSevere * normalisedTimeFactor;
 
-  const severeCasesByRequestedTimeNormal = Math.floor(infectionsByRequestedTimeNormal * 0.15);
-  const severeCasesByRequestedTimeSevere = Math.floor(infectionsByRequestedTimeSevere * 0.15);
+  const SCBRTN = Math.floor(infectionsByRequestedTimeNormal * 0.15);
+  const SCBRTS = Math.floor(infectionsByRequestedTimeSevere * 0.15);
+  const severeCasesByRequestedTimeNormal = SCBRTN;
+  const severeCasesByRequestedTimeSevere = SCBRTS;
 
-  const hsptlBedsByRqstdTimeNormal = Math.floor(totalHospitalBeds * 0.35) - severeCasesByRequestedTimeNormal;
-  const hsptlBedsByRqstdTimeSevere = Math.floor(totalHospitalBeds * 0.35) - severeCasesByRequestedTimeSevere;
-  
+  const HBBRTN = Math.floor(totalHospitalBeds * 0.35) - SCBRTN;
+  const hsptlBedsByRqstdTimeNormal = HBBRTN;
+  const HBBRTS = Math.floor(totalHospitalBeds * 0.35) - SCBRTS;
+  const hsptlBedsByRqstdTimeSevere = HBBRTS;
 
-  const dollarsInFlightNormal = Math.floor(infectionsByRequestedTimeNormal * avgDailyIncomeInUSD * avgDailyIncomePopulation/30);
-  const dollarsInFlightSevere = Math.floor(infectionsByRequestedTimeSevere * avgDailyIncomeInUSD * avgDailyIncomePopulation/30);
+  const IBRTN = infectionsByRequestedTimeNormal;
+  const IBRTS = infectionsByRequestedTimeSevere;
+  const AVDIU = avgDailyIncomeInUSD;
+  const AVDIP = avgDailyIncomePopulation;
+
+  const dollarsInFlightNormal = Math.floor(IBRTN * AVDIU * (AVDIP / 30));
+  const dollarsInFlightSevere = Math.floor(IBRTS * AVDIU * (AVDIP / 30));
+
   return {
     data,
     impact: {
@@ -64,5 +73,3 @@ const covid19ImpactEstimator = (data) => {
 };
 
 export default covid19ImpactEstimator;
-
-
