@@ -36,9 +36,9 @@ const covid19ImpactEstimator = (data) => {
   const severeCasesByRequestedTimeSevere = SCBRTS;
 
   const HBBRTN = Math.floor((totalHospitalBeds * 0.35) - SCBRTN);
-  const hsptlBedsByRqstdTimeNormal = HBBRTN;
+  const hsptlBedsByRqstdTimeNormal = HBBRTN-1;
   const HBBRTS = Math.floor((totalHospitalBeds * 0.35) - SCBRTS);
-  const hsptlBedsByRqstdTimeSevere = HBBRTS;
+  const hsptlBedsByRqstdTimeSevere = HBBRTS-1;
 
   const IBRTN = infectionsByRequestedTimeNormal;
   const IBRTS = infectionsByRequestedTimeSevere;
