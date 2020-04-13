@@ -61,7 +61,7 @@ const covid19ImpactEstimator = (data) => {
       dollarsInFlight: dlrFlghtN
     }, // best case estimation
     severeImpact: {
-      currentlyInfected: crntlyInfctdNrml,
+      currentlyInfected: crntlyInfctdSvr,
       infectionsByRequestedTime: infcByRqstdTmSvr,
       severeCasesByRequestedTime: svrCsByRqsdTmSvr,
       hospitalBedsByRequestedTime: bdByRqstdTmSvr,
