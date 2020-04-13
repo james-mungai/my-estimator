@@ -21,10 +21,10 @@ const covid19ImpactEstimator = (data) => {
 
   const { avgDailyIncomeInUSD, avgDailyIncomePopulation } = region;
 
-  const normalisedTimeFactor = 2 ** Math.floor(timeToElapseInDays / 3);
+  const normalisedTimeFactor = 2 ** (timeToElapseInDays / 3);
 
-  const currentlyInfectedNormal = Math.floor(reportedCases * 10);
-  const currentlyInfectedSevere = Math.floor(reportedCases * 50);
+  const currentlyInfectedNormal = reportedCases * 10;
+  const currentlyInfectedSevere = reportedCases * 50;
 
 
   const infectionsByRequestedTimeNormal = currentlyInfectedNormal * normalisedTimeFactor;
