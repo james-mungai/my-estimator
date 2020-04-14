@@ -1,4 +1,5 @@
-const ventilators = (infections) => Math.trunc(0.02 * infections);
+const getIcuCases = (infections) => Math.trunc(0.05 * infections);
+const getVentCases = (infections) => Math.trunc(0.02 * infections);
 const covid19ImpactEstimator = (data) => {
   const {
     reportedCases, totalHospitalBeds, region, timeToElapse, periodType
@@ -38,11 +39,11 @@ const covid19ImpactEstimator = (data) => {
   const bdByRqstdTmNrml = Math.trunc((THB * 0.35) - svrCsByRqsdTmNrml);
   const bdByRqstdTmSvr = Math.trunc((THB * 0.35) - svrCsByRqsdTmSvr);
 
-  const icuCsByRqstdTmNrml = ventilators(infcByRqstdTmNrml);
-  const icuCsByRqstdTmSvr = ventilators(infcByRqstdTmSvr);
+  const icuCsByRqstdTmNrml = getIcuCases(infcByRqstdTmNrml);
+  const icuCsByRqstdTmSvr = getIcuCases(infcByRqstdTmSvr);
 
-  const ventCsByRqstdTmNrml = Math.trunc((2 / 100) * infcByRqstdTmNrml);
-  const ventCsByRqstdTmSvr = Math.trunc((2 / 100) * infcByRqstdTmSvr);
+  const ventCsByRqstdTmNrml = getVentCases(infcByRqstdTmNrml);
+  const ventCsByRqstdTmSvr = getVentCases(infcByRqstdTmSvr);
 
   const AVDIU = avgDailyIncomeInUSD;
   const AVDIP = avgDailyIncomePopulation;
