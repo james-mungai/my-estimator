@@ -40,8 +40,8 @@ const covid19ImpactEstimator = (data) => {
   const icuCsByRqstdTmNrml = Math.trunc(0.05 * infcByRqstdTmNrml);
   const icuCsByRqstdTmSvr = Math.trunc(0.05 * infcByRqstdTmSvr);
 
-  const ventCsByRqstdTmNrml = Math.trunc(0.02 * infcByRqstdTmNrml);
-  const ventCsByRqstdTmSvr = Math.trunc(0.02 * infcByRqstdTmSvr);
+  const ventCsByRqstdTmNrml = Math.trunc((2 / 100) * infcByRqstdTmNrml);
+  const ventCsByRqstdTmSvr = Math.trunc((2 / 100) * infcByRqstdTmSvr);
 
   const AVDIU = avgDailyIncomeInUSD;
   const AVDIP = avgDailyIncomePopulation;
