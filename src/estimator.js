@@ -61,7 +61,7 @@ const covid19ImpactEstimator = (data) => {
   return {
     data,
     impact: {
-      currentlyInfected: getCurrentlyinfectedN,
+      currentlyInfected: currentlyInfectedNrml,
       infectionsByRequestedTime: infctdByRqstdTmN,
       severeCasesByRequestedTime: getSevereCases(infctdByRqstdTmN),
       hospitalBedsByRequestedTime: hospitalBedsNrml,
@@ -72,7 +72,7 @@ const covid19ImpactEstimator = (data) => {
         days)
     },
     severeImpact: {
-      currentlyInfected: getCurrentlyinfectedS,
+      currentlyInfected: currentlyInfectedSvr,
       infectionsByRequestedTime: infctdByRqstdTmS,
       severeCasesByRequestedTime: getSevereCases(infctdByRqstdTmS),
       hospitalBedsByRequestedTime: hospitalBedsSvr,
