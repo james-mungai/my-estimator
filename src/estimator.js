@@ -20,7 +20,7 @@ const covid19ImpactEstimator = (data) => {
       break;
   }
 
-  const timeFactor = Math.floor(timeInDays / 3);
+  const timeFactor = Math.trunc(timeInDays / 3);
 
   const crntlyInfctdNrml = reportedCases * 10;
   const crntlyInfctdSvr = reportedCases * 50;
@@ -29,25 +29,25 @@ const covid19ImpactEstimator = (data) => {
   const infcByRqstdTmSvr = crntlyInfctdSvr * (2 ** timeFactor);
 
 
-  const svrCsByRqsdTmNrml = Math.floor(infcByRqstdTmNrml * 0.15);
-  const svrCsByRqsdTmSvr = Math.floor(infcByRqstdTmSvr * 0.15);
+  const svrCsByRqsdTmNrml = Math.trunc(infcByRqstdTmNrml * 0.15);
+  const svrCsByRqsdTmSvr = Math.trunc(infcByRqstdTmSvr * 0.15);
 
   const THB = totalHospitalBeds;
 
   const bdByRqstdTmNrml = Math.trunc(THB * 0.35) - svrCsByRqsdTmNrml;
   const bdByRqstdTmSvr = Math.trunc(THB * 0.35) - svrCsByRqsdTmSvr;
 
-  const icuCsByRqstdTmNrml = Math.floor(0.05 * infcByRqstdTmNrml);
-  const icuCsByRqstdTmSvr = Math.floor(0.05 * infcByRqstdTmSvr);
+  const icuCsByRqstdTmNrml = Math.trunc(0.05 * infcByRqstdTmNrml);
+  const icuCsByRqstdTmSvr = Math.trunc(0.05 * infcByRqstdTmSvr);
 
-  const ventCsByRqstdTmNrml = Math.floor(0.02 * infcByRqstdTmNrml);
-  const ventCsByRqstdTmSvr = Math.floor(0.02 * infcByRqstdTmSvr);
+  const ventCsByRqstdTmNrml = Math.trunc(0.02 * infcByRqstdTmNrml);
+  const ventCsByRqstdTmSvr = Math.trunc(0.02 * infcByRqstdTmSvr);
 
   const AVDIU = avgDailyIncomeInUSD;
   const AVDIP = avgDailyIncomePopulation;
 
-  const dlrFlghtN = Math.floor(((infcByRqstdTmNrml * AVDIU) * AVDIP) / 30);
-  const dlrFlghtS = Math.floor((infcByRqstdTmSvr * AVDIU * AVDIP) / 30);
+  const dlrFlghtN = Math.trunc(((infcByRqstdTmNrml * AVDIU) * AVDIP) / 30);
+  const dlrFlghtS = Math.trunc((infcByRqstdTmSvr * AVDIU * AVDIP) / 30);
 
   return {
     data,
