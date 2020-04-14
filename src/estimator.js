@@ -1,3 +1,4 @@
+const ventilators = (infections) => Math.trunc(0.02 * infections);
 const covid19ImpactEstimator = (data) => {
   const {
     reportedCases, totalHospitalBeds, region, timeToElapse, periodType
@@ -37,8 +38,8 @@ const covid19ImpactEstimator = (data) => {
   const bdByRqstdTmNrml = Math.trunc((THB * 0.35) - svrCsByRqsdTmNrml);
   const bdByRqstdTmSvr = Math.trunc((THB * 0.35) - svrCsByRqsdTmSvr);
 
-  const icuCsByRqstdTmNrml = Math.trunc(0.05 * infcByRqstdTmNrml);
-  const icuCsByRqstdTmSvr = Math.trunc(0.05 * infcByRqstdTmSvr);
+  const icuCsByRqstdTmNrml = ventilators(infcByRqstdTmNrml);
+  const icuCsByRqstdTmSvr = ventilators(infcByRqstdTmSvr);
 
   const ventCsByRqstdTmNrml = Math.trunc((2 / 100) * infcByRqstdTmNrml);
   const ventCsByRqstdTmSvr = Math.trunc((2 / 100) * infcByRqstdTmSvr);
@@ -46,8 +47,8 @@ const covid19ImpactEstimator = (data) => {
   const AVDIU = avgDailyIncomeInUSD;
   const AVDIP = avgDailyIncomePopulation;
 
-  const dlrFlghtN = Math.trunc(((infcByRqstdTmNrml * AVDIU) * AVDIP) / 30);
-  const dlrFlghtS = Math.trunc((infcByRqstdTmSvr * AVDIU * AVDIP) / 30);
+  const dlrFlghtN = Math.trunc(((infcByRqstdTmNrml * AVDIU) * AVDIP) * 30);
+  const dlrFlghtS = Math.trunc((infcByRqstdTmSvr * AVDIU * AVDIP) * 30);
 
   return {
     data,
